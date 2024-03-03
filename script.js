@@ -43,6 +43,8 @@ const maxTrailLength = 50;
 let player1Score = 0;
 let player2Score = 0;
 
+let gameRunning = false;
+
 window.onload = function(){
     board = document.getElementById("board");
     board.height = boardHeight;
@@ -57,14 +59,28 @@ window.onload = function(){
     context.fillStyle = "limegreen";
     context.fillRect(player2.x, player2.y, player2.width, player2.height);
 
-    requestAnimationFrame(update);
-    document.addEventListener("keyup", movePlayer);
+    //startButton
+    const startButton = document.getElementById("startButton");
+    startButton.addEventListener('click', function(){
+        startGame();
+    })
+    // requestAnimationFrame(update);
+    // document.addEventListener("keyup", movePlayer);
 
     //restart game button
     const restartButton = document.getElementById("restartButton");
     restartButton.addEventListener('click', function(){
         resetButton(1);
     });
+}
+
+function startGame(){
+    if(!gameRunning){
+        gameRunning = true;
+        requestAnimationFrame(update);
+    }
+    
+    document.addEventListener("keyup", movePlayer);
 }
 
 function update(){
@@ -215,12 +231,18 @@ function resetButton(direction){
         y : boardHeight / 2,
         width : bWidth,
         height : bHeight,
-        velocityX : direction, //moves left and right
-        velocityY : 2 //moves up and down
+        velocityX : 0, //moves left and right
+        velocityY : 0 //moves up and down
     }
     //clear line
     prevBallPositions = []
 
     player1Score = 0;
     player2Score = 0;
+
+    //startButton
+    const startButton = document.getElementById("startButton");
+    startButton.addEventListener('click', function(){
+        resetGame(direction);
+    })
 }
